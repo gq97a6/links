@@ -1,0 +1,8 @@
+name: develop
+
+services:
+  template:
+    container_name: link
+    hostname: link
+    image: gq97a6/images:link-1.0.0
+    restart: unless-stopped
