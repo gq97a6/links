@@ -12,9 +12,6 @@ import org.eclipse.microprofile.jwt.JsonWebToken
 @Path("")
 class EditEndpoint {
 
-    @Inject
-    var jwt: JsonWebToken? = null
-
     @RolesAllowed("edit")
     @GET
     @Path("/edit")

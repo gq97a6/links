@@ -11,19 +11,14 @@ import io.quarkus.mongodb.reactive.ReactiveMongoClient
 import jakarta.annotation.security.DenyAll
 import jakarta.annotation.security.PermitAll
 import jakarta.annotation.security.RolesAllowed
-import jakarta.enterprise.context.Dependent
 import jakarta.inject.Inject
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.Response
-import org.eclipse.microprofile.jwt.JsonWebToken
 import java.util.*
 
 @DenyAll
 @Path("")
 class AddressEndpoint {
-
-    @Inject
-    var jwt: JsonWebToken? = null
 
     @Inject
     lateinit var db: ReactiveMongoClient
@@ -39,8 +34,7 @@ class AddressEndpoint {
     }
 
     //Create new address
-    //@RolesAllowed("edit")
-    @PermitAll
+    @RolesAllowed("edit")
     @POST
     @Path("/address")
     open suspend fun post(address: Address): Response {

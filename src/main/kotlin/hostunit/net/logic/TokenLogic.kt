@@ -1,12 +1,12 @@
 package hostunit.net.logic
 
+import hostunit.net.epochNow
 import io.quarkus.security.identity.CurrentIdentityAssociation
 import io.smallrye.jwt.build.Jwt
 import io.smallrye.mutiny.coroutines.awaitSuspending
 import jakarta.ws.rs.core.Response.ResponseBuilder
 import org.eclipse.microprofile.jwt.JsonWebToken
 import java.time.Duration
-import java.time.Instant
 
 //Generate new JWT token
 fun generateToken(
@@ -19,16 +19,14 @@ fun generateToken(
     .upn(username) //required to be valid
     .expiresIn(Duration.ofSeconds(expiresIn))
     .groups(HashSet(roles))
-    .innerSign()
-    .encrypt()
+    .sign()
+//.innerSign()
+//.encrypt()
 
 //Issue new token if current one is in grace period
 suspend fun ResponseBuilder.refreshToken(cia: CurrentIdentityAssociation?): ResponseBuilder {
     val token = cia?.deferredIdentity?.awaitSuspending()?.principal as JsonWebToken?
-
-    val now = Instant.now().epochSecond
-    val issued = token?.issuedAtTime ?: 0
-    println(now - issued)
+    println(epochNow - (token?.issuedAtTime ?: 0))
 
 //    val gracePeriodEnd = expirationTime.plusSeconds(GRACE_PERIOD_SECONDS)
 //

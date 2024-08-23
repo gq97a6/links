@@ -1,0 +1,90 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "2.0.0"
+    id "org.jetbrains.kotlin.plugin.allopen" version "2.0.10"
+    id 'io.quarkus'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    //Quarkus
+    implementation 'io.quarkus:quarkus-rest'
+    implementation 'io.quarkus:quarkus-rest-jackson'
+    implementation 'io.quarkus:quarkus-container-image-docker'
+    implementation 'io.quarkus:quarkus-kotlin'
+    implementation 'io.quarkus:quarkus-arc'
+    implementation 'io.quarkus:quarkus-kotlin'
+
+    //Vertex
+    implementation 'io.vertx:vertx-lang-kotlin-coroutines:4.5.0'
+    implementation 'io.smallrye.reactive:mutiny-kotlin:1.4.0'
+
+    //Database client
+    implementation 'io.quarkus:quarkus-mongodb-client'
+
+    //JWT
+    implementation 'io.quarkus:quarkus-smallrye-jwt'
+    implementation 'io.quarkus:quarkus-smallrye-jwt-build'
+
+    //Password hashing
+    implementation 'org.mindrot:jbcrypt:0.4'
+
+    //Other
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9'
+}
+
+group 'hostunit.net'
+version '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+test {
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+}
+
+allOpen {
+    annotation("jakarta.ws.rs.Path")
+    annotation("jakarta.enterprise.context.ApplicationScoped")
+    annotation("jakarta.persistence.Entity")
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_21
+    kotlinOptions.javaParameters = true
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_21
+}
+
+tasks.register('deployVps') {
+    // Ensure this task runs after the Quarkus image build task
+    // Step 1: Quarkus image build and push
+    dependsOn 'imageBuild'
+    dependsOn 'imagePush'
+
+    doLast {
+        // Step 1: Copy docker-compose.yml file
+        exec {
+            commandLine 'cmd', '/c', 'scp', '.\\src\\main\\docker\\docker-compose.yml', 'root@vps:/tmp/docker-compose.yml'
+        }
+
+
+        // Step 2: Pull docker image
+        exec {
+            commandLine 'cmd', '/c', 'ssh', 'vps', '"docker compose -f /tmp/docker-compose.yml pull"'
+        }
+
+        // Step 3: SSH into the VPS and run the Docker Compose command
+        exec {
+            commandLine 'cmd', '/c', 'ssh', 'vps', '"docker compose -f /tmp/docker-compose.yml up -d --force-recreate"'
+        }
+    }
+}

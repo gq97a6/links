@@ -1,6 +1,7 @@
 package hostunit.net.classes
 
 class Address(
+    var id: String = "",
     var temporary: Boolean = false,
     var direct: Boolean = false,
     var code: String = "",
