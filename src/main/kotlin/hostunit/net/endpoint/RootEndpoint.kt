@@ -1,12 +1,10 @@
 package hostunit.net.endpoint
 
-import jakarta.annotation.security.DenyAll
 import jakarta.annotation.security.PermitAll
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.PathParam
 
-@DenyAll
 @Path("")
 class RootEndpoint {
 

@@ -8,7 +8,6 @@ import hostunit.net.repository.findAddressByCode
 import hostunit.net.repository.insert
 import hostunit.net.repository.replace
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
-import jakarta.annotation.security.DenyAll
 import jakarta.annotation.security.PermitAll
 import jakarta.annotation.security.RolesAllowed
 import jakarta.inject.Inject
@@ -16,7 +15,6 @@ import jakarta.ws.rs.*
 import jakarta.ws.rs.core.Response
 import java.util.*
 
-@DenyAll
 @Path("")
 class AddressEndpoint {
 
