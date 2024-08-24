@@ -43,16 +43,6 @@ class LoginEndpoint {
     )
 
     @PermitAll
-    @GET
-    @Path("/login/{code}")
-    open suspend fun indexRedirect(@PathParam("code") code: String) = index(code)
-
-    @PermitAll
-    @GET
-    @Path("/login")
-    open suspend fun index(@HeaderParam("code") code: String?) = "login: $code"
-
-    @PermitAll
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
