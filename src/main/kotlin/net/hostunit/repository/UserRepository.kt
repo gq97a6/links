@@ -1,11 +1,13 @@
-package hostunit.net.repository
+package net.hostunit.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import hostunit.net.classes.Address
-import hostunit.net.classes.User
-import hostunit.net.logic.*
-import hostunit.net.objectMapper
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
+import net.hostunit.classes.User
+import net.hostunit.logic.collection
+import net.hostunit.logic.findBy
+import net.hostunit.logic.insert
+import net.hostunit.logic.replace
+import net.hostunit.objectMapper
 import org.bson.types.ObjectId
 
 suspend fun User.insert(db: ReactiveMongoClient, mapper: ObjectMapper = objectMapper): String? {

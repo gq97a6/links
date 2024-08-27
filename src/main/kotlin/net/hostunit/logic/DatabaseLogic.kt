@@ -1,8 +1,8 @@
-package hostunit.net.logic
+package net.hostunit.logic
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.mongodb.client.model.ReplaceOptions
-import hostunit.net.objectMapper
+import net.hostunit.objectMapper
 import io.quarkus.mongodb.FindOptions
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
 import io.quarkus.mongodb.reactive.ReactiveMongoCollection

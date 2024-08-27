@@ -1,12 +1,12 @@
-package hostunit.net.endpoint
+package net.hostunit.endpoint
 
-import hostunit.net.classes.Address
-import hostunit.net.logic.generateCode
-import hostunit.net.logic.isInvalid
-import hostunit.net.logic.isInvalidCode
-import hostunit.net.repository.findAddressByCode
-import hostunit.net.repository.insert
-import hostunit.net.repository.replace
+import net.hostunit.classes.Address
+import net.hostunit.logic.generateCode
+import net.hostunit.logic.isInvalid
+import net.hostunit.logic.isInvalidCode
+import net.hostunit.repository.findAddressByCode
+import net.hostunit.repository.insert
+import net.hostunit.repository.replace
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
 import jakarta.annotation.security.PermitAll
 import jakarta.annotation.security.RolesAllowed

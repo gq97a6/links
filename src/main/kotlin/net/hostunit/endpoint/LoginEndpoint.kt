@@ -1,9 +1,9 @@
-package hostunit.net.endpoint
+package net.hostunit.endpoint
 
-import hostunit.net.classes.User
-import hostunit.net.logic.generateToken
-import hostunit.net.repository.findUserById
-import hostunit.net.repository.findUserByName
+import net.hostunit.classes.User
+import net.hostunit.logic.generateToken
+import net.hostunit.repository.findUserById
+import net.hostunit.repository.findUserByName
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
 import io.smallrye.jwt.auth.principal.JWTParser
 import jakarta.annotation.security.PermitAll

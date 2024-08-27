@@ -1,4 +1,4 @@
-package hostunit.net.classes
+package net.hostunit.classes
 
 class Address(
     var id: String = "",

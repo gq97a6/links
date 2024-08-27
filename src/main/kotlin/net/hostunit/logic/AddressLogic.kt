@@ -1,6 +1,6 @@
-package hostunit.net.logic
+package net.hostunit.logic
 
-import hostunit.net.classes.Address
+import net.hostunit.classes.Address
 
 val blocked = listOf("porn", "sex", "orgasm", "fuck")
 

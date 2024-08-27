@@ -1,4 +1,4 @@
-package hostunit.net.logic
+package net.hostunit.logic
 
 import io.smallrye.jwt.build.Jwt
 import java.time.Duration

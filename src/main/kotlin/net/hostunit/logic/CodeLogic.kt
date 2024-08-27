@@ -1,7 +1,7 @@
-package hostunit.net.logic
+package net.hostunit.logic
 
-import hostunit.net.classes.Address
-import hostunit.net.repository.findAddressByCode
+import net.hostunit.classes.Address
+import net.hostunit.repository.findAddressByCode
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
 
 val letters = ('A'..'Z').filterNot { it in listOf('Q', 'V', 'J', 'I', 'O', 'L', 'N', 'M') }

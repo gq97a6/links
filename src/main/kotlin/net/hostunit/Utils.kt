@@ -1,4 +1,4 @@
-package hostunit.net
+package net.hostunit
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper

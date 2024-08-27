@@ -1,11 +1,9 @@
-package hostunit.net.endpoint
+package net.hostunit.endpoint
 
 import jakarta.annotation.security.PermitAll
 import jakarta.annotation.security.RolesAllowed
-import jakarta.ws.rs.GET
-import jakarta.ws.rs.HeaderParam
-import jakarta.ws.rs.Path
-import jakarta.ws.rs.PathParam
+import jakarta.ws.rs.*
+import jakarta.ws.rs.core.MediaType
 
 @Path("")
 class HtmlEndpoint {
@@ -28,15 +26,24 @@ class HtmlEndpoint {
     @PermitAll
     @GET
     @Path("/login")
-    open suspend fun loginIndexPage() = "login page"
+    @Produces(MediaType.TEXT_HTML)
+    open suspend fun loginIndexPage() = getIndexPageContent()
 
     @RolesAllowed("edit")
     @GET
     @Path("/edit")
-    open suspend fun editIndexPage() = "edit index page"
+    @Produces(MediaType.TEXT_HTML)
+    open suspend fun editIndexPage() = getIndexPageContent()
 
     @RolesAllowed("edit")
     @GET
     @Path("/edit/{code}")
     open suspend fun editCodePage(@PathParam("code") code: String) = "edit code page: $code"
+
+    private fun getIndexPageContent(): String {
+        val resourcePath = "META-INF/resources/index.html"
+        val inputStream = javaClass.classLoader.getResourceAsStream(resourcePath)
+        return inputStream?.bufferedReader()?.use { it.readText() }
+            ?: throw IllegalStateException("Resource not found: $resourcePath")
+    }
 }
