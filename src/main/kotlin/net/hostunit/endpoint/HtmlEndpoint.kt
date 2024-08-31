@@ -8,7 +8,6 @@ import jakarta.ws.rs.core.MediaType
 
 @Path("")
 class HtmlEndpoint {
-
     @PermitAll
     @GET
     @Path("{path:.*}")
