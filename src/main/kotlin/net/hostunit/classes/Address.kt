@@ -2,7 +2,7 @@ package net.hostunit.classes
 
 class Address(
     var id: String = "",
-    var temporary: Boolean = false,
+    var permanent: Boolean = false,
     var direct: Boolean = false,
     var code: String = ""
 ) {

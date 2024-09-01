@@ -16,8 +16,6 @@ class StaticFilesRedirect : ContainerRequestFilter {
         val requestUri = context.uriInfo.requestUri
         val filename = requestUri.path.substringAfterLast("/")
 
-        println(context.uriInfo.requestUri.path)
-
         if (isStaticFile(filename)) {
             val newUri = UriBuilder.fromUri(requestUri).replacePath("/$filename").build()
             context.abortWith(Response.seeOther(newUri).build())
@@ -27,6 +25,7 @@ class StaticFilesRedirect : ContainerRequestFilter {
     private fun isStaticFile(path: String): Boolean {
         return listOf(
             ".wasm",
+            ".xml",
             ".js",
             ".map",
             ".html",

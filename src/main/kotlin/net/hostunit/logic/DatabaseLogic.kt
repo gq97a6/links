@@ -1,12 +1,14 @@
 package net.hostunit.logic
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.mongodb.client.model.Aggregates.limit
+import com.mongodb.client.model.DeleteOptions
 import com.mongodb.client.model.ReplaceOptions
-import net.hostunit.objectMapper
 import io.quarkus.mongodb.FindOptions
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
 import io.quarkus.mongodb.reactive.ReactiveMongoCollection
 import io.smallrye.mutiny.coroutines.awaitSuspending
+import net.hostunit.objectMapper
 import org.bson.Document
 import org.bson.types.ObjectId
 
@@ -43,4 +45,17 @@ suspend fun ReactiveMongoCollection<Document>.replace(obj: Any, mapper: ObjectMa
     val replaceOptions = ReplaceOptions().apply { upsert(false) }
 
     return this.replaceOne(filterDocument, document, replaceOptions).awaitSuspending().modifiedCount
+}
+
+suspend inline fun ReactiveMongoCollection<Document>.deleteBy(
+    field: String,
+    value: Any,
+    mapper: ObjectMapper = objectMapper
+): Boolean? {
+    val document = Document().apply { put(field, value) }
+    val options = DeleteOptions().apply { limit(1) }
+
+    return this.deleteOne(document, options).awaitSuspending()?.let {
+        if (it.deletedCount == 1L) true else null
+    }
 }

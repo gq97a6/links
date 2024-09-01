@@ -7,11 +7,11 @@ import io.quarkus.mongodb.reactive.ReactiveMongoClient
 val letters = ('A'..'Z').filterNot { it in listOf('Q', 'V', 'J', 'I', 'O', 'L', 'N', 'M') }
 val digits = ('1'..'9')
 
-suspend fun Address.generateCode(db: ReactiveMongoClient, temporary: Boolean = this.temporary): String? {
+suspend fun Address.generateCode(db: ReactiveMongoClient, permanent: Boolean = this.permanent): String? {
     var code = ""
     for (i in 0..2) {
-        code = if (temporary) generateTemporaryCode()
-        else generatePermanentCode()
+        code = if (permanent) generatePermanentCode()
+        else generateTemporaryCode()
 
         if (findAddressByCode(db, code) == null) break
         if (i == 2) return null
