@@ -38,7 +38,7 @@ class AddressEndpoint {
     @Path("/address")
     open suspend fun post(address: Address): Response {
         //Generate code for addresses without one
-        if (address.code.isBlank()) address.generateCode(db, address.permanent) ?: return Response.serverError().build()
+        if (address.code.isBlank()) address.generateCode(db) ?: return Response.serverError().build()
 
         //Force uppercase and check if address with that code already exists
         else {
@@ -50,10 +50,10 @@ class AddressEndpoint {
         if (address.isInvalid()) return Response.status(418).build()
 
         //Insert address
-        address.insert(db)
+        address.id = address.insert(db) ?: return Response.serverError().build()
 
         //Return generated code
-        return Response.ok(address.code).build()
+        return Response.ok(address).build()
     }
 
     //Edit existing address

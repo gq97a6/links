@@ -1,8 +1,24 @@
 name: develop
 
+include:
+  - /own/docker/networks.yml
+
 services:
-  template:
+  link:
     container_name: link
     hostname: link
     image: gq97a6/images:link-1.0.0
     restart: unless-stopped
+    networks:
+      - nginx-nw
+      - mongodb-nw
+    environment:
+      SERVER_DOMAIN: link.hostunit.net
+      SERVER_ORIGIN: https://link.hostunit.net
+      MONGODB_CONNECTION_STRING: mongodb://root:JVWTRNKYJUYASVHKETHQCCEJ@mongodb:27017
+      TOKEN_PRIMARY_EXPIRE: 300
+      TOKEN_REFRESH_EXPIRE: 7200
+      #SIGN_KEY_LOCATION:
+      #VERIFY_KEY_LOCATION:
+      #ENCRYPT_KEY_LOCATION:
+      #DECRYPT_KEY_LOCATION:

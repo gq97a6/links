@@ -11,6 +11,7 @@ import io.smallrye.mutiny.coroutines.awaitSuspending
 import net.hostunit.objectMapper
 import org.bson.Document
 import org.bson.types.ObjectId
+import java.util.*
 
 fun ReactiveMongoClient.collection(
     collection: String,
@@ -34,11 +35,13 @@ suspend inline fun <reified T> ReactiveMongoCollection<Document>.findBy(
 suspend fun ReactiveMongoCollection<Document>.insert(obj: Any, mapper: ObjectMapper = objectMapper): String? {
     val document = Document.parse(mapper.writeValueAsString(obj))
     document.remove("id")
+    document["lastChange"] = Date()
     return this.insertOne(document).awaitSuspending().insertedId?.asObjectId()?.value?.toString()
 }
 
 suspend fun ReactiveMongoCollection<Document>.replace(obj: Any, mapper: ObjectMapper = objectMapper): Long {
     val document = Document.parse(mapper.writeValueAsString(obj))
+    document["lastChange"] = Date()
     val id = document.remove("id") ?: return 0L
 
     val filterDocument = Document().apply { put("_id", ObjectId(id as String)) }

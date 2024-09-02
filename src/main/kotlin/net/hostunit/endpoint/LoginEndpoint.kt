@@ -75,7 +75,7 @@ class LoginEndpoint {
         val user = findUserById(db, id) ?: return Response.status(404).build()
 
         //Abort if token was issued before the user record was altered
-        if (jwt.issuedAtTime < user.valid) return Response.status(401).build()
+        if (jwt.issuedAtTime < user.lastChange.time) return Response.status(401).build()
 
         return generateResponse(user).build()
     }
