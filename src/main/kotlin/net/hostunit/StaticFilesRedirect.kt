@@ -11,6 +11,7 @@ import jakarta.ws.rs.ext.Provider
 @PreMatching
 class StaticFilesRedirect : ContainerRequestFilter {
     override fun filter(context: ContainerRequestContext) {
+        if (context.uriInfo.requestUri.path.startsWith("/api")) return
         if (context.uriInfo.requestUri.path.count { it == '/' } <= 1) return
 
         val requestUri = context.uriInfo.requestUri

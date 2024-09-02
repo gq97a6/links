@@ -16,7 +16,7 @@ import net.hostunit.repository.insert
 import net.hostunit.repository.replace
 import java.util.*
 
-@Path("")
+@Path("/api")
 class AddressEndpoint {
 
     @Inject

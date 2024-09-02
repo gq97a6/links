@@ -18,6 +18,6 @@ suspend fun findAddressByCode(db: ReactiveMongoClient, code: String, mapper: Obj
     return db.collection("address").findBy("code", code, mapper)
 }
 
-suspend fun deleteAddressByCode(db: ReactiveMongoClient, code: String, mapper: ObjectMapper = objectMapper): Boolean? {
-    return db.collection("address").deleteBy("code", code, mapper)
+suspend fun deleteAddressByCode(db: ReactiveMongoClient, code: String): Boolean? {
+    return db.collection("address").deleteBy("code", code)
 }
