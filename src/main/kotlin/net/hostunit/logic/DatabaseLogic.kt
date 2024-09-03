@@ -42,7 +42,7 @@ suspend fun ReactiveMongoCollection<Document>.insert(obj: Any, mapper: ObjectMap
 
 suspend fun ReactiveMongoCollection<Document>.replace(obj: Any, mapper: ObjectMapper = objectMapper): Long {
     val document = Document.parse(mapper.writeValueAsString(obj))
-    //document["lastChange"] = Date()
+    document["lastChange"] = epochNow
     val id = document.remove("id") ?: return 0L
 
     val filterDocument = Document().apply { put("_id", ObjectId(id as String)) }
