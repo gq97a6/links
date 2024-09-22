@@ -21,4 +21,10 @@ class HtmlEndpoint {
         return inputStream?.bufferedReader()?.use { it.readText() }
             ?: throw IllegalStateException("Resource not found: $resourcePath")
     }
+
+    @PermitAll
+    @GET
+    @Path("/test")
+    @Produces(MediaType.TEXT_HTML)
+    open suspend fun test() = "ok"
 }
