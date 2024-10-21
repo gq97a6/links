@@ -73,9 +73,8 @@ tasks.register('deployVps') {
     doLast {
         // Step 1: Copy docker-compose.yml file
         exec {
-            commandLine 'cmd', '/c', 'scp', '.\\src\\main\\docker\\docker-compose.yml', 'root@vps:/tmp/docker-compose.yml'
+            commandLine 'cmd', '/c', 'scp', './src/main/docker/docker-compose.yml', 'root@vps:/tmp/docker-compose.yml'
         }
-
 
         // Step 2: Pull docker image
         exec {
