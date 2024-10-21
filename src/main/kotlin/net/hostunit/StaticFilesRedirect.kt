@@ -30,6 +30,7 @@ class StaticFilesRedirect : ContainerRequestFilter {
             ".js",
             ".map",
             ".html",
+            ".svg",
             ".css",
         ).any { path.endsWith(it) }
     }
