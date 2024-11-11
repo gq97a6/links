@@ -67,11 +67,11 @@ class AddressEndpoint {
         //Validate address
         if (address.isInvalid()) return Response.status(418).build()
 
-        //Check if address with that code exists
-        if (findAddressByCode(db, address.code) == null) return Response.status(400).build()
-
         //Address must have id
         if (address.id.length != 24) return Response.status(400).build()
+
+        //Check if address with that code exists
+        if (findAddressByCode(db, address.code) == null) return Response.status(400).build()
 
         //Merge address
         address.replace(db)

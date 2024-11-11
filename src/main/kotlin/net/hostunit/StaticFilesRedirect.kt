@@ -11,17 +11,13 @@ import jakarta.ws.rs.ext.Provider
 @PreMatching
 class StaticFilesRedirect : ContainerRequestFilter {
     override fun filter(context: ContainerRequestContext) {
-        println(context.uriInfo.requestUri.path)
         if (context.uriInfo.requestUri.path.startsWith("/api")) return
-        println(1)
         if (context.uriInfo.requestUri.path.count { it == '/' } <= 1) return
-        println(2)
 
         val requestUri = context.uriInfo.requestUri
         val filename = requestUri.path.substringAfterLast("/")
 
         if (isStaticFile(filename)) {
-            println(3)
             val newUri = UriBuilder.fromUri(requestUri).replacePath("/$filename").build()
             context.abortWith(Response.seeOther(newUri).build())
         }
