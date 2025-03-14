@@ -197,7 +197,7 @@ Cookie: token=???
 }
 ```
 
-### Get address - `GET` /api/addresss/`{id}`
+### Get address - `GET` /api/addresss/`{code}`
 | Code | Possible reason                        |
 |------|----------------------------------------|
 | 200  | OK                                     |
@@ -248,7 +248,7 @@ Cookie: token=???
 }
 ```
 
-### Delete address - `DELETE` /api/addresss/`{id}`
+### Delete address - `DELETE` /api/addresss/`{code}`
 | Code  | Possible reason          |
 |-------|--------------------------|
 | 200   | OK                       |
