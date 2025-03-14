@@ -58,7 +58,7 @@ class LoginEndpoint {
     private suspend fun loginWithCredentials(data: LoginData): Response {
         if (data.username.isNullOrBlank() || data.password.isNullOrBlank()) return Response.status(400).build()
 
-        val user = findUserByName(db, data.username) ?: return Response.status(404).build()
+        val user = findUserByName(db, data.username) ?: return Response.status(401).build()
         if (!BCrypt.checkpw(data.password, user.pass)) return Response.status(401).build()
         return generateResponse(user).build()
     }
@@ -73,7 +73,7 @@ class LoginEndpoint {
         if (id.isNullOrBlank()) return Response.status(400).build()
 
         //Fetch user from database
-        val user = findUserById(db, id) ?: return Response.status(404).build()
+        val user = findUserById(db, id) ?: return Response.status(401).build()
 
         //Abort if token was issued before the user record was altered
         if (jwt.issuedAtTime < user.lastChange) return Response.status(401).build()

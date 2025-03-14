@@ -6,7 +6,4 @@ class Address(
     var code: String = ""
 ) {
     var links: MutableList<Link> = mutableListOf()
-        set(value) {
-            field = value.take(4).toMutableList()
-        }
 }

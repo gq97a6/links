@@ -47,7 +47,7 @@ class AddressEndpoint {
         }
 
         //Validate address
-        if (address.isInvalid()) return Response.status(418).build()
+        if (address.isInvalid()) return Response.status(400).build()
 
         //Insert address
         address.id = address.insert(db) ?: return Response.serverError().build()
@@ -65,15 +65,15 @@ class AddressEndpoint {
         if (address.code != code) return Response.status(400).build()
 
         //Validate address
-        if (address.isInvalid()) return Response.status(418).build()
+        if (address.isInvalid()) return Response.status(400).build()
 
         //Address must have id
         if (address.id.length != 24) return Response.status(400).build()
 
         //Check if address with that code exists
-        if (findAddressByCode(db, address.code) == null) return Response.status(400).build()
+        if (findAddressByCode(db, address.code) == null) return Response.status(404).build()
 
-        //Merge address
+        //Replace address by id
         address.replace(db)
 
         return Response.ok().build()
