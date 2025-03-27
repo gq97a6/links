@@ -22,7 +22,6 @@ fun String.isInvalidCode(): Boolean {
 //Validate address
 fun Address.isInvalid(): Boolean {
     if (this.containsBlocked()) return true
-    if (this.links.size != 4) return true
     if (this.code.isInvalidCode()) return true
     return false
 }
