@@ -2,11 +2,11 @@
 
 ## Overview
 
-This project is a backend application that serves as an advanced link management system, extending the functionality of traditional link shorteners. Instead of shortening a single URL, each entry in the database corresponds to a unique code (e.g., `33333`) that maps to **four different links**, effectively providing four "slots" per code. This allows for greater flexibility in organizing and accessing grouped links under a single identifier.
+This project is a backend application that serves as an advanced link management system, extending the functionality of traditional link shorteners. Instead of shortening a single URL, each entry in the database corresponds to a unique code (e.g., `33333`) that maps to **multiple different links**, effectively providing multiple "slots" per code. This allows for greater flexibility in organizing and accessing grouped links under a single identifier.
 
 ## Features
 
-- **Multi-Link Codes**: Associate up to four different URLs with a single short code for grouped link management.
+- **Multi-Link Codes**: Associate multiple URLs with a single short code for grouped link management.
 - **Asynchronous and Non-Blocking Operations**: Leveraging Kotlin coroutines and suspend functions to ensure high performance and scalability.
 - **Database Integration**: Utilizes MongoDB for flexible and scalable data storage.
 - **Containerized Deployment**: Deployable via Docker for consistency across environments.
