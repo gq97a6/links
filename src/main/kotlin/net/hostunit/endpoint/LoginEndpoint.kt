@@ -1,6 +1,7 @@
 package net.hostunit.endpoint
 
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
+import io.quarkus.mongodb.reactive.ReactiveMongoDatabase
 import io.smallrye.jwt.auth.principal.JWTParser
 import jakarta.annotation.security.PermitAll
 import jakarta.inject.Inject
@@ -23,7 +24,7 @@ import org.mindrot.jbcrypt.BCrypt
 class LoginEndpoint {
 
     @Inject
-    lateinit var db: ReactiveMongoClient
+    lateinit var db: ReactiveMongoDatabase
 
     @Inject
     var jwtParser: JWTParser? = null

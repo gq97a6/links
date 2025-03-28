@@ -1,6 +1,6 @@
 package net.hostunit.endpoint
 
-import io.quarkus.mongodb.reactive.ReactiveMongoClient
+import io.quarkus.mongodb.reactive.ReactiveMongoDatabase
 import jakarta.annotation.security.PermitAll
 import jakarta.annotation.security.RolesAllowed
 import jakarta.inject.Inject
@@ -20,7 +20,7 @@ import java.util.*
 class AddressEndpoint {
 
     @Inject
-    lateinit var db: ReactiveMongoClient
+    lateinit var db: ReactiveMongoDatabase
 
     //Get existing address
     @PermitAll

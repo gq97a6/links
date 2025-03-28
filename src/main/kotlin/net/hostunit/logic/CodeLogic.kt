@@ -1,10 +1,10 @@
 package net.hostunit.logic
 
+import io.quarkus.mongodb.reactive.ReactiveMongoDatabase
 import net.hostunit.classes.Address
 import net.hostunit.repository.findAddressByCode
-import io.quarkus.mongodb.reactive.ReactiveMongoClient
 
-suspend fun Address.generateCode(db: ReactiveMongoClient): String? {
+suspend fun Address.generateCode(db: ReactiveMongoDatabase): String? {
     var code = ""
     for (i in 0..2) {
         code = generateCode()

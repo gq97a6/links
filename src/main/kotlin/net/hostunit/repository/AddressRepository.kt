@@ -1,23 +1,26 @@
 package net.hostunit.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.quarkus.mongodb.reactive.ReactiveMongoDatabase
 import net.hostunit.classes.Address
+import net.hostunit.logic.deleteBy
+import net.hostunit.logic.findBy
+import net.hostunit.logic.insert
+import net.hostunit.logic.replace
 import net.hostunit.objectMapper
-import io.quarkus.mongodb.reactive.ReactiveMongoClient
-import net.hostunit.logic.*
 
-suspend fun Address.insert(db: ReactiveMongoClient, mapper: ObjectMapper = objectMapper): String? {
-    return db.collection("address").insert(this, mapper)
+suspend fun Address.insert(db: ReactiveMongoDatabase, mapper: ObjectMapper = objectMapper): String? {
+    return db.getCollection("address").insert(this, mapper)
 }
 
-suspend fun Address.replace(db: ReactiveMongoClient, mapper: ObjectMapper = objectMapper): Long {
-    return db.collection("address").replace(this, mapper)
+suspend fun Address.replace(db: ReactiveMongoDatabase, mapper: ObjectMapper = objectMapper): Long {
+    return db.getCollection("address").replace(this, mapper)
 }
 
-suspend fun findAddressByCode(db: ReactiveMongoClient, code: String, mapper: ObjectMapper = objectMapper): Address? {
-    return db.collection("address").findBy("code", code, mapper)
+suspend fun findAddressByCode(db: ReactiveMongoDatabase, code: String, mapper: ObjectMapper = objectMapper): Address? {
+    return db.getCollection("address").findBy("code", code, mapper)
 }
 
-suspend fun deleteAddressByCode(db: ReactiveMongoClient, code: String): Boolean? {
-    return db.collection("address").deleteBy("code", code)
+suspend fun deleteAddressByCode(db: ReactiveMongoDatabase, code: String): Boolean? {
+    return db.getCollection("address").deleteBy("code", code)
 }

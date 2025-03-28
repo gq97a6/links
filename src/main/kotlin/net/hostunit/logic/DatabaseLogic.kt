@@ -7,17 +7,31 @@ import com.mongodb.client.model.ReplaceOptions
 import io.quarkus.mongodb.FindOptions
 import io.quarkus.mongodb.reactive.ReactiveMongoClient
 import io.quarkus.mongodb.reactive.ReactiveMongoCollection
+import io.quarkus.mongodb.reactive.ReactiveMongoDatabase
 import io.smallrye.mutiny.coroutines.awaitSuspending
+import jakarta.enterprise.context.ApplicationScoped
+import jakarta.enterprise.inject.Produces
+import jakarta.inject.Inject
 import net.hostunit.epochNow
 import net.hostunit.objectMapper
 import org.bson.Document
 import org.bson.types.ObjectId
-import java.util.*
+import org.eclipse.microprofile.config.inject.ConfigProperty
 
-fun ReactiveMongoClient.collection(
-    collection: String,
-    database: String = "link"
-): ReactiveMongoCollection<Document> = this.getDatabase(database).getCollection(collection)
+@ApplicationScoped
+class MongoDatabaseProducer {
+
+    @Inject
+    lateinit var mongoClient: ReactiveMongoClient
+
+    @ConfigProperty(name = "quarkus.mongodb.database")
+    lateinit var databaseName: String
+
+    @Produces
+    fun produceReactiveMongoDatabase(): ReactiveMongoDatabase {
+        return mongoClient.getDatabase(databaseName)
+    }
+}
 
 suspend inline fun <reified T> ReactiveMongoCollection<Document>.findBy(
     field: String,
