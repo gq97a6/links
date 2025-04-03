@@ -38,7 +38,7 @@ dependencies {
 }
 
 group 'hostunit.net'
-version '4.0.0'
+version '5.0.0'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -62,28 +62,4 @@ compileKotlin {
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_21
-}
-
-tasks.register('deployVps') {
-    // Ensure this task runs after the Quarkus image build task
-    // Step 1: Quarkus image build and push
-    dependsOn 'imageBuild'
-    dependsOn 'imagePush'
-
-    doLast {
-        // Step 1: Copy docker-compose.yml file
-        exec {
-            commandLine 'cmd', '/c', 'scp', './src/main/docker/docker-compose.yml', 'root@vps:/tmp/docker-compose.yml'
-        }
-
-        // Step 2: Pull docker image
-        exec {
-            commandLine 'cmd', '/c', 'ssh', 'vps', '"docker compose -f /tmp/docker-compose.yml pull"'
-        }
-
-        // Step 3: SSH into the VPS and run the Docker Compose command
-        exec {
-            commandLine 'cmd', '/c', 'ssh', 'vps', '"docker compose -f /tmp/docker-compose.yml up -d --force-recreate"'
-        }
-    }
 }

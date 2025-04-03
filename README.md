@@ -41,29 +41,41 @@ The application is designed with a focus on asynchronicity and non-blocking oper
 # Example Docker Compose
 
 ```yml
+name: links
+
 services:
-  mongodb:
-    container_name: mongodb
-    hostname: mongodb
+  links.backend:
+    container_name: links.backend
+    hostname: links.backend
+    image: gq97a6/links
+    restart: unless-stopped
+    environment:
+      SERVER_DOMAIN: localhost
+      SERVER_ORIGIN: https://localhost
+      QUARKUS_MONGODB_CONNECTION_STRING: mongodb://root:1234@mongodb:27017
+      JWT_TOKEN_PRIMARY_EXPIRE: 300
+      JWT_TOKEN_REFRESH_EXPIRE: 7200
+      QUARKUS_HTTP_CORS_ENABLED: true
+      
+  links.mongodb:
+    container_name: links.mongodb
+    hostname: links.mongodb
     image: mongo
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 1234
-
-  links:
-    container_name: links
-    hostname: links
-    image: gq97a6/images:link-4.0.0
-    restart: unless-stopped
-    ports:
-      - 443:443
+    
+  links.mongoexpress:
+    container_name: links.mongoexpress
+    hostname: links.mongoexpress
+    image: mongo-express
+    restart: always
     environment:
-      SERVER_DOMAIN: localhost
-      SERVER_ORIGIN: https://localhost
-      MONGODB_CONNECTION_STRING: mongodb://root:1234@mongodb:27017
-      TOKEN_PRIMARY_EXPIRE: 300
-      TOKEN_REFRESH_EXPIRE: 7200
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 1234
+      ME_CONFIG_MONGODB_URL: mongodb://root:1234@links.mongodb:27017
+      ME_CONFIG_BASICAUTH: false
 ```
 
 # MongoDB Collections
@@ -73,22 +85,38 @@ services:
 | address    | `{"_id":ObjectId(), "direct":false, "code":"12345", "links":[{"payload":"", "action":"TAB"}, {"payload":"", "action":"COPY"}, {"payload":"", "action":"TAB"}, {"payload":"", "action":"TAB"}], "lastChange":1742652283}` |
 | user       | `{"_id":ObjectId(), "name":"user", "pass":"$2a$12$V5l5E58oo1vDXLk0YhUan.dDk2wfnzhpkOXsN/iqfSoNNJ4N7HGvC", "roles":["edit"], "lastChange":1725311805}`                                                                    |
 
-# Environment variables
+# Configuration Options
 
-| Variable                  | Description                                          | Default value                       |
-|---------------------------|------------------------------------------------------|-------------------------------------|
-| SERVER_DOMAIN             | Server domain                                        | localhost                           |
-| SERVER_ORIGIN             | Server origin                                        | http://localhost                    |
-| SIGN_KEY_PATH             | Path to key used to sign JWTs                        | certs/jwt/privateKey.pem            |
-| VERIFY_KEY_PATH           | Path to key used to verify the signature of JWTs     | certs/jwt/publicKey.pem             |
-| ENCRYPT_KEY_PATH          | Path to key used to encrypt the contents of the JWTs | certs/jwt/publicKey.pem             |
-| DECRYPT_KEY_PATH          | Path to key used to decrypt encrypted JWTs           | certs/jwt/privateKey.pem            |
-| MONGODB_CONNECTION_STRING | Connection string to database                        | mongodb://root:1234@localhost:27017 |
-| MONGODB_DATABASE          | Database name                                        | link                                |
-| TOKEN_PRIMARY_EXPIRE      | Primary JWT expiration time in ms                    | 300                                 |
-| TOKEN_REFRESH_EXPIRE      | Refresh JWT expiration time in ms                    | 7200                                |
-| SSL_CERT_PATH             | Path to SSL certificate                              | certs/ssl/fullchain.pem             |
-| SSL_KEY_PATH              | Path to SSL key                                      | certs/ssl/privkey.pem               |
+Configuration can be done using Docker environment variables. The most commonly used ones are listed below.  
+Additional configuration options are available: https://quarkus.io/guides/all-config
+
+**Note:** When converting Quarkus-style property keys to environment variable format, use the following conventions:
+- Replace dots and dashes with underscores
+- Convert all letters to uppercase
+
+**For example:**
+- `jwt.sign.key.location` => `JWT_SIGN_KEY_LOCATION`
+- `quarkus.http.ssl-port` => `QUARKUS_HTTP_SSL_PORT`
+
+| Environment Variable                     | Description                                            | Default Value                       |
+|------------------------------------------|--------------------------------------------------------|-------------------------------------|
+| `SERVER_DOMAIN`                          | Server domain                                          | localhost                           |
+| `SERVER_ORIGIN`                          | Server origin                                          | http://localhost                    |
+| `JWT_SIGN_KEY_LOCATION`                  | Path to key used to `sign` JWTs                        | certs/jwt/privateKey.pem            |
+| `JWT_VERIFY_KEY_LOCATION`                | Path to key used to `verify` the signature of JWTs     | certs/jwt/publicKey.pem             |
+| `JWT_ENCRYPT_KEY_LOCATION`               | Path to key used to `encrypt` the contents of the JWTs | certs/jwt/publicKey.pem             |
+| `JWT_DECRYPT_KEY_LOCATION`               | Path to key used to `decrypt` encrypted JWTs           | certs/jwt/privateKey.pem            |
+| `JWT_TOKEN_PRIMARY_EXPIRE`               | Primary JWT expiration time in ms                      | 300                                 |
+| `JWT_TOKEN_REFRESH_EXPIRE`               | Refresh JWT expiration time in ms                      | 7200                                |
+| `QUARKUS_MONGODB_CONNECTION_STRING`      | Connection string to database                          | mongodb://root:1234@localhost:27017 |
+| `QUARKUS_MONGODB_DATABASE`               | Database name                                          | link                                |
+| `QUARKUS_HTTP_SSL_CERTIFICATE_FILES`     | Path to SSL certificate                                | certs/ssl/fullchain.pem             |
+| `QUARKUS_HTTP_SSL_CERTIFICATE_KEY_FILES` | Path to SSL key                                        | certs/ssl/privkey.pem               |
+| `QUARKUS_HTTP_SSL_PORT`                  | HTTPS port                                             | 443                                 |
+| `QUARKUS_HTTP_PORT`                      | HTTP port                                              | 80                                  |
+| `QUARKUS_HTTP_HOST`                      | HTTP host                                              | 0.0.0.0                             |
+| `QUARKUS_HTTP_INSECURE_REQUESTS`         | If HTTP is enabled                                     | enabled                             |
+| `QUARKUS_HTTP_CORS_ENABLED`              | If CORS is enabled                                     | false                               |
 
 <br>
 <br>
