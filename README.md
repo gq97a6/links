@@ -49,6 +49,8 @@ services:
     hostname: links.backend
     image: gq97a6/links
     restart: unless-stopped
+    ports:
+      - 80:80
     environment:
       SERVER_DOMAIN: localhost
       SERVER_ORIGIN: https://localhost
@@ -71,6 +73,8 @@ services:
     hostname: links.mongoexpress
     image: mongo-express
     restart: always
+    ports:
+      - 100:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: 1234
